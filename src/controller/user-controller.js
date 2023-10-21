@@ -1,5 +1,6 @@
 const User = require("../model/User");
 const bcrypt = require("bcryptjs");
+const generateToken = require("../utils/generateToken");
 
 // @desc    Register user
 // @route   POST /api/v1/users/register
@@ -51,6 +52,7 @@ const login = async (req, res) => {
         fullname: userFound?.fullname,
         isAdmin: userFound?.isAdmin,
       },
+      token: generateToken(userFound?._id),
     });
   } else {
     throw new Error("Invalid credentials");
