@@ -32,6 +32,32 @@ const register = async (req, res) => {
   });
 };
 
+// @desc    Login user
+// @route   POST /api/v1/users/login
+// @access  Public
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  //find the user by  email
+  const userFound = await User.findOne({ email });
+
+  if (userFound && (await bcrypt.compare(password, userFound?.password))) {
+    res.status(200).json({
+      status: "success",
+      message: "User loged in successfully",
+      userFound: {
+        _id: userFound?._id,
+        fullname: userFound?.fullname,
+        isAdmin: userFound?.isAdmin,
+      },
+    });
+  } else {
+    throw new Error("Invalid credentials");
+  }
+};
+
 module.exports = {
   register,
+  login,
 };
