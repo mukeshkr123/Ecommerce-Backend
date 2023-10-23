@@ -1,12 +1,13 @@
 const User = require("../model/User");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../utils/generateToken");
+const asyncHandler = require("express-async-handler");
 
 // @desc    Register user
 // @route   POST /api/v1/users/register
 // @access  Private/Admin
 
-const register = async (req, res) => {
+const register = asyncHandler(async (req, res) => {
   const { fullname, email, password } = req.body;
 
   //check if user is already registered
@@ -31,13 +32,13 @@ const register = async (req, res) => {
     message: "User registerd successfully",
     data: user,
   });
-};
+});
 
 // @desc    Login user
 // @route   POST /api/v1/users/login
 // @access  Public
 
-const login = async (req, res) => {
+const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   //find the user by  email
@@ -57,7 +58,7 @@ const login = async (req, res) => {
   } else {
     throw new Error("Invalid credentials");
   }
-};
+});
 
 module.exports = {
   register,
