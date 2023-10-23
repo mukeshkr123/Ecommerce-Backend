@@ -1,3 +1,4 @@
+//global ErrorHandler
 const globalErrHandler = (err, req, res, next) => {
   const stack = err?.stack;
   const statusCode = err?.statusCode ? err.statusCode : 500;

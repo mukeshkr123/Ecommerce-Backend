@@ -4,6 +4,7 @@ const v1ApiRoutes = require("../routes");
 require("dotenv").config();
 const cors = require("cors");
 const globalErrHandler = require("../middlewares/globaLError");
+const NotFound = require("../middlewares/notFound");
 
 const app = express();
 //db connection
@@ -22,5 +23,6 @@ app.use("/api", v1ApiRoutes);
 
 //err middleware
 app.use(globalErrHandler);
+app.use(NotFound);
 
 module.exports = app;
