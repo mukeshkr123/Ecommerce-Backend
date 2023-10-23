@@ -85,7 +85,23 @@ const login = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Get user profile
+// @route   GET /api/v1/users/profile
+// @access  Private
+
+const getProfile = asyncHandler(async (req, res) => {
+  //find the user
+  const user = await User.findById(req.body.id);
+  console.log(req);
+  res.status(200).json({
+    status: "success",
+    message: "User profile fetched successfully",
+    user,
+  });
+});
+
 module.exports = {
   register,
   login,
+  getProfile,
 };
