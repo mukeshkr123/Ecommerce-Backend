@@ -70,8 +70,54 @@ const getProduct = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    update  product
+// @route   PUT /api/products/:id/update
+// @access  Private/Admin
+
+const updateProduct = asyncHandler(async (req, res) => {
+  const { name, description, category, sizes, colors, price, totalQty, brand } =
+    req.body;
+  const updateProduct = await Product.findByIdAndUpdate(
+    req.params.id,
+    {
+      name,
+      description,
+      category,
+      sizes,
+      colors,
+      price,
+      totalQty,
+      brand,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(204).json({
+    status: "success",
+    message: "Product updated successfully",
+    updateProduct,
+  });
+});
+
+// @desc    delete  product
+// @route   DELETE /api/products/:id/delete
+// @access  Private/Admin
+
+const deleteProduct = asyncHandler(async (req, res) => {
+  await Product.findByIdAndDelete(req.params.id);
+  res.status(200).json({
+    status: "success",
+    message: "Product deleted successfully",
+  });
+});
+
 module.exports = {
   createProduct,
   getProducts,
   getProduct,
+  updateProduct,
+  deleteProduct,
 };
