@@ -91,7 +91,11 @@ const login = asyncHandler(async (req, res) => {
 
 const getProfile = asyncHandler(async (req, res) => {
   //find the user
-  const user = await User.findById(req.body.id);
+  const user = await User.findById(req.userAuthId);
+  if (!user) {
+    return next(new Error("User not found"));
+  }
+
   console.log(req);
   res.status(200).json({
     status: "success",
