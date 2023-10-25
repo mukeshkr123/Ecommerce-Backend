@@ -11,6 +11,7 @@ const createProduct = asyncHandler(async (req, res) => {
 
   // Check if the product already exists
   const productExists = await Product.findOne({ name });
+
   if (productExists) {
     return res.status(400).json({
       status: "Error",
@@ -43,7 +44,20 @@ const createProduct = asyncHandler(async (req, res) => {
 // @access  Public
 
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find();
+  console.log(req.query);
+
+  //query
+  let productQuery = Product.find();
+
+  //search by name
+  if (req.query.name) {
+    productQuery = productQuery.find({
+      name: { $regex: req.query.name, $options: "i" },
+    });
+  }
+
+  // await the query
+  const products = await productQuery;
 
   res.status(200).json({
     status: "Success",
