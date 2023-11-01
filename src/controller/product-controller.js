@@ -53,6 +53,10 @@ const createProduct = asyncHandler(async (req, res) => {
   categoryFound.products.push(product._id);
   // resave
   await categoryFound.save();
+  // push the product to brand
+  brandFound.products.push(product._id);
+  // resave
+  await brandFound.save();
 
   res.status(201).json({
     status: "Success",
