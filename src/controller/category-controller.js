@@ -9,14 +9,14 @@ const createCategory = asyncHandler(async (req, res) => {
 
   try {
     // Check if the category already exists
-    const categoryExists = await Category.findOne({ name });
+    const categoryExists = await Category.findOne({ name: name.toLowerCase() });
     if (categoryExists) {
       throw new Error(`Category "${name}" already exists`);
     }
 
     // Create a new category
     const category = await Category.create({
-      name,
+      name: name.toLowerCase(),
       user: req.userAuthId,
     });
 
