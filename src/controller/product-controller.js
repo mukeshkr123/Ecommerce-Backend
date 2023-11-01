@@ -1,3 +1,4 @@
+const Category = require("../model/Category");
 const Product = require("../model/Product");
 const asyncHandler = require("express-async-handler");
 
@@ -19,6 +20,14 @@ const createProduct = asyncHandler(async (req, res) => {
     });
   }
 
+  //find the category
+  const categoryFound = await Category.findOne({
+    name: category,
+  });
+  if (!categoryFound) {
+    throw new Error(`Product "${name}" is not found`);
+  }
+
   // Create the product
   const product = await Product.create({
     name,
@@ -31,6 +40,11 @@ const createProduct = asyncHandler(async (req, res) => {
     brand,
     user: req.userAuthId,
   });
+
+  // push the product to category
+  categoryFound.products.push(product._id);
+  // resave
+  await categoryFound.save();
 
   res.status(201).json({
     status: "Success",
