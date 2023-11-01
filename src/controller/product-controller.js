@@ -1,3 +1,4 @@
+const Brand = require("../model/Brand");
 const Category = require("../model/Category");
 const Product = require("../model/Product");
 const asyncHandler = require("express-async-handler");
@@ -25,7 +26,14 @@ const createProduct = asyncHandler(async (req, res) => {
     name: category,
   });
   if (!categoryFound) {
-    throw new Error(`Product "${name}" is not found`);
+    throw new Error(`category "${name}" is not found`);
+  }
+
+  //find the brand
+  const brandFound = await Brand.findOne({ name: brand });
+  console.log(brandFound);
+  if (!brandFound) {
+    throw new Error(`Brand "${name}" is not found`);
   }
 
   // Create the product
